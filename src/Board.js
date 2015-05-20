@@ -121,26 +121,30 @@
       }, false);
     },
 
-
-/*
-    var myBoard = new Board({n:10});
-    range = _.range(myBoard.get('n'));
-
-    _.each(range, function(i){
-      console.log(i);
-    });
-*/
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var rows = this.rows();
+      var diagonals = [];
+
+      _.each(rows, function(row, index) {
+        if (majorDiagonalColumnIndexAtFirstRow < rows.length) {
+          diagonals.push(row[majorDiagonalColumnIndexAtFirstRow++]);
+       }
+      });
+      return this._sum(diagonals) > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var range = _.range(this.get('n'));
+      var board = this;
+
+      return _.reduce(range, function(conflicts, diagIndex){
+        return conflicts || board.hasMajorDiagonalConflictAt(diagIndex);
+      }, false);
     },
 
 
