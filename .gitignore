@@ -41,3 +41,6 @@ node_modules
 .floobit
 .floo
 .flooignore
+
+#scratchpad
+scratch.js
