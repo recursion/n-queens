@@ -63,4 +63,24 @@ describe("Board", function() {
       [0, 0, 0, 0]
     ]);
   });
+
+  describe("#rotate", function() {
+    it("should rotate a given board 90 degrees", function() {
+      var matrix = [
+        [ 1,  2,  3,  4],
+        [ 5,  6,  7,  8],
+        [ 9, 10, 11, 12],
+        [13, 14, 15, 16]
+      ];
+      var expectedMatrix = [
+        [13, 9, 5, 1],
+        [14, 10, 6, 2],
+        [15, 11, 7, 3],
+        [16, 12, 8, 4]
+      ];
+      var board = new Board(matrix);
+      board.rotate();
+      expect(board.rows()).to.deep.equal(expectedMatrix);
+    });
+  });
 });
