@@ -74,6 +74,20 @@
     =                 TODO: fill in these Helper Functions                    =
     =========================================================================*/
 
+    _sum: function(array){
+      return _.reduce(array, function(count, occupied){
+        return count + occupied;
+      },0);
+    },
+
+    _conflictsOverEntireBoard: function(conflictChecker){
+      var range = _.range(this.get('n'));
+      var board = this;
+      return _.reduce(range, function(conflicts, index){
+        return conflicts || board[conflictChecker](index);
+      }, false);
+    },
+
     // ROWS - run from left to right
     // --------------------------------------------------------------
     //
@@ -83,19 +97,9 @@
       return this._sum(row) > 1;
     },
 
-    _sum: function(array){
-      return _.reduce(array, function(count, occupied){
-        return count + occupied;
-      },0);
-    },
-
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      var board = this;
-
-      return _.reduce(this.rows(), function(conflicts, row, rowIndex){
-        return conflicts || board.hasRowConflictAt(rowIndex);
-      }, false);
+      return this._conflictsOverEntireBoard("hasRowConflictAt");
     },
 
 
@@ -113,12 +117,7 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      var range = _.range(this.get('n'));
-      var board = this;
-
-      return _.reduce(range, function(conflicts, colIndex){
-        return conflicts || board.hasColConflictAt(colIndex);
-      }, false);
+      return this._conflictsOverEntireBoard("hasColConflictAt");
     },
 
     // Major Diagonals - go from top-left to bottom-right
@@ -139,15 +138,8 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      var range = _.range(this.get('n'));
-      var board = this;
-
-      return _.reduce(range, function(conflicts, diagIndex){
-        return conflicts || board.hasMajorDiagonalConflictAt(diagIndex);
-      }, false);
+      return this._conflictsOverEntireBoard("hasMajorDiagonalConflictAt");
     },
-
-
 
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
@@ -159,7 +151,7 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      return this._conflictsOverEntireBoard("hasMinorDiagonalConflictAt");
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
