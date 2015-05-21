@@ -88,6 +88,23 @@
       }, false);
     },
 
+    rotate: function() {
+      var n = this.get('n');
+      var board = this.rows();//array of rows
+      var rotated = [];
+
+      for (var i = 0; i < n; ++i) {
+        for (var j = 0; j < n; ++j) {
+          if(rotated[i] === undefined) {
+            rotated[i] = [];
+          }
+          rotated[i][j] = board[n - j - 1][i];
+        }
+      }
+
+      this.set(rotated);
+    },
+
     // ROWS - run from left to right
     // --------------------------------------------------------------
     //
@@ -159,6 +176,16 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+
+      /*
+         Hey Michael.. We are testing the board from only one perpective (the first row)
+         lets try this after presentations..
+         Test _conflictsOverEntireBoard()
+         Rotate the board 90degrees and test again..
+         total 3 revolutions. To cover all the 'corner' cases.
+         .. giving us 4 boolean results which we OR together for the final
+         result. (then one last rotation to return it to its original state)
+      */
       return this._conflictsOverEntireBoard("hasMinorDiagonalConflictAt");
     }
 
